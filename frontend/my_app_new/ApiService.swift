@@ -1,12 +1,12 @@
 import Foundation
 
 class ApiService {
-    func postRequest(description: String, color: String, completion: @escaping (String) -> Void) {
+    func postRequest(description: String, color: String, style: String, completion: @escaping (String) -> Void) {
         let url = URL(string: "http://localhost:5001/generate_image")!
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         
-        let json: [String: Any] = ["description": description, "color": color]
+        let json: [String: Any] = ["description": description, "color": color, "style": style]
         let jsonData = try? JSONSerialization.data(withJSONObject: json)
         
         request.httpBody = jsonData
