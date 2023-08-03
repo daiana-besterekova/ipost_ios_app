@@ -13,7 +13,8 @@ struct MyApp: App {
     
     var body: some Scene {
         WindowGroup {
-            ContentView().environmentObject(viewRouter)
+            ContentView()
+                .environmentObject(viewRouter)
         }
     }
 }

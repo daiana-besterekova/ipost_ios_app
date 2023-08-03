@@ -1,13 +1,14 @@
 import Foundation
 import SwiftUI
 import UIKit
+import PythonKit
 
 struct BlueButton: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .padding()
             .frame(width: 200, height: 40)
-            .background(Color("purple"))
+            .background(Color("Button"))
             .foregroundColor(.white)
             .clipShape(RoundedRectangle(cornerRadius: 10))
     }
@@ -33,7 +34,7 @@ struct GenerateView: View {
                             .resizable()
                             .frame(width: 24, height: 24)
 
-                        Text("Color")
+                        // Text("Color")
                     }
 
                     ColorPicker("Select a color", selection: $selectedColor)
@@ -45,7 +46,6 @@ struct GenerateView: View {
                         Image("Style")
                             .resizable()
                             .frame(width: 24, height: 24)
-                        Text("Style")
                     }
                     Picker("Select an option", selection: $selectedOption) {
                         ForEach(options, id: \.self) { option in
@@ -59,11 +59,12 @@ struct GenerateView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
 
                 HStack{
-                    Image("Write")
+                    Image("Description")
                         .resizable()
                         .frame(width: 24, height: 24)
                     TextField("Add description", text: $description)
                         .padding()
+
                 }
 
                 Button(action: {

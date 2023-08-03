@@ -14,6 +14,9 @@
 		04184CDA2A6093B2007A7A85 /* ApiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04184CD92A6093B2007A7A85 /* ApiService.swift */; };
 		04184CDC2A6093EC007A7A85 /* GenerateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04184CDB2A6093EC007A7A85 /* GenerateView.swift */; };
 		04184CDE2A60940A007A7A85 /* ViewRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04184CDD2A60940A007A7A85 /* ViewRouter.swift */; };
+		042454E92A6D740B006BEE57 /* PageOne.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042454E82A6D740B006BEE57 /* PageOne.swift */; };
+		042454EB2A6EC18A006BEE57 /* test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042454EA2A6EC18A006BEE57 /* test.swift */; };
+		04FBF9DE2A79563F00D3D498 /* PythonKit in Frameworks */ = {isa = PBXBuildFile; productRef = 04FBF9DD2A79563F00D3D498 /* PythonKit */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +29,8 @@
 		04184CD92A6093B2007A7A85 /* ApiService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiService.swift; sourceTree = "<group>"; };
 		04184CDB2A6093EC007A7A85 /* GenerateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateView.swift; sourceTree = "<group>"; };
 		04184CDD2A60940A007A7A85 /* ViewRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewRouter.swift; sourceTree = "<group>"; };
+		042454E82A6D740B006BEE57 /* PageOne.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageOne.swift; sourceTree = "<group>"; };
+		042454EA2A6EC18A006BEE57 /* test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = test.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -33,6 +38,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				04FBF9DE2A79563F00D3D498 /* PythonKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -62,7 +68,9 @@
 				04184CDD2A60940A007A7A85 /* ViewRouter.swift */,
 				04184CD92A6093B2007A7A85 /* ApiService.swift */,
 				04184CCC2A6092FB007A7A85 /* ContentView.swift */,
+				042454E82A6D740B006BEE57 /* PageOne.swift */,
 				04184CDB2A6093EC007A7A85 /* GenerateView.swift */,
+				042454EA2A6EC18A006BEE57 /* test.swift */,
 				04184CCE2A6092FD007A7A85 /* Assets.xcassets */,
 				04184CD02A6092FD007A7A85 /* my_app_new.entitlements */,
 				04184CD12A6092FD007A7A85 /* Preview Content */,
@@ -94,6 +102,9 @@
 			dependencies = (
 			);
 			name = my_app_new;
+			packageProductDependencies = (
+				04FBF9DD2A79563F00D3D498 /* PythonKit */,
+			);
 			productName = my_app_new;
 			productReference = 04184CC72A6092FB007A7A85 /* my_app_new.app */;
 			productType = "com.apple.product-type.application";
@@ -122,6 +133,9 @@
 				Base,
 			);
 			mainGroup = 04184CBE2A6092FB007A7A85;
+			packageReferences = (
+				04FBF9DC2A79563F00D3D498 /* XCRemoteSwiftPackageReference "PythonKit" */,
+			);
 			productRefGroup = 04184CC82A6092FB007A7A85 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -151,8 +165,10 @@
 				04184CDE2A60940A007A7A85 /* ViewRouter.swift in Sources */,
 				04184CCD2A6092FB007A7A85 /* ContentView.swift in Sources */,
 				04184CCB2A6092FB007A7A85 /* my_app_newApp.swift in Sources */,
+				042454E92A6D740B006BEE57 /* PageOne.swift in Sources */,
 				04184CDA2A6093B2007A7A85 /* ApiService.swift in Sources */,
 				04184CDC2A6093EC007A7A85 /* GenerateView.swift in Sources */,
+				042454EB2A6EC18A006BEE57 /* test.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -366,6 +382,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		04FBF9DC2A79563F00D3D498 /* XCRemoteSwiftPackageReference "PythonKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pvieito/PythonKit.git";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		04FBF9DD2A79563F00D3D498 /* PythonKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 04FBF9DC2A79563F00D3D498 /* XCRemoteSwiftPackageReference "PythonKit" */;
+			productName = PythonKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 04184CBF2A6092FB007A7A85 /* Project object */;
 }

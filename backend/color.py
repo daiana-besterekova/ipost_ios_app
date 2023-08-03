@@ -183,9 +183,6 @@ def closest_color(rgb):
 
     return min(color_diffs)[1]
 
-# тестирование функции 
-#print(closest_color((154, 190, 50)))
-
 def remove_rgb_prefix(color_string):
     if color_string.startswith("rgb"):
         return color_string[3:]
