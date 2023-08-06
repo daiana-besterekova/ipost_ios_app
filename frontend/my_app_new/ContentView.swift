@@ -1,78 +1,113 @@
 import SwiftUI
 import PythonKit
+import UIKit // Add this import for UIKit
+
+class SharedData: ObservableObject {
+    @Published var description: String = ""
+    @Published var selectedColor: Color = .yellow
+    @Published var selectedOption: String = "Retro"
+    @Published var imageUrl: URL? = nil
+    @Published var street: String = ""
+    @Published var city: String = ""
+    @Published var app: String = ""
+    @Published var country: String = ""
+    @Published var zip: String = ""
+}
 
 struct ContentView: View {
     @State private var selectedPage = 0
+    @StateObject private var sharedData = SharedData()
     let pageCount = 3
     
+    @State private var generatedImage: UIImage? = nil
+    @State private var showingAlert = false // Add this state
+    
     var body: some View {
-        ZStack {
-            Image("Background")
-                .resizable()
-                .scaledToFill()
-                .edgesIgnoringSafeArea(.all)
-
-            GeometryReader { geometry in
-                VStack(alignment: .center) {
-                    
-//                    HStack {
-//                        Spacer()
-//                        Button(action: {
-//                            // Handle skip action
-//                        }) {
-//                            Text("Skip")
-//                                .padding()
-//                        }
-//                    }
-//                    .padding()
-                    
-                    Spacer()
-                    PageView(selection: $selectedPage, views: [AnyView(PageOneView()), AnyView(PageTwoView()), AnyView(PageThreeView())])
-                    
-                        .frame(height: 500)
-                    
-                    Spacer()
-                    HStack {
-                        Button(action: {
-                            // Handle back action
-                            if selectedPage > 0 {
-                                selectedPage -= 1
-                            }
-                        }) {
-                            Image("Back")
-                                .resizable()
-                                .frame(width: 50, height: 50)
-                        }
-
+        NavigationView {
+            ZStack {
+                Color("Gray")
+                GeometryReader { geometry in
+                    VStack(alignment: .center) {
+                        
                         Spacer()
-                            .frame(width: 60)
-
-                        CustomPageControl(numberOfPages: pageCount, currentPage: $selectedPage)
-
+                        PageView(selection: $selectedPage, views: [
+                            AnyView(PageOneView().environmentObject(sharedData)),
+                            AnyView(PageTwoView().environmentObject(sharedData)),
+                            AnyView(PageThreeView().environmentObject(sharedData))
+                        ])
+                            .frame(height: 500)
+                        
                         Spacer()
-                            .frame(width: 60)
-
-                        Button(action: {
-                            // Handle next action
-                            if selectedPage < pageCount - 1 {
-                                selectedPage += 1
+                        HStack {
+                            Button(action: {
+                                // Handle back action
+                                if selectedPage > 0 {
+                                    selectedPage -= 1
+                                }
+                            }) {
+                                Image("Back")
+                                    .resizable()
+                                    .frame(width: 50, height: 50)
                             }
-                        }) {
-                            Image("Next")
-                                .resizable()
-                                .frame(width: 50, height: 50)
+
+                            Spacer()
+                                .frame(width: 60)
+
+                            CustomPageControl(numberOfPages: pageCount, currentPage: $selectedPage)
+
+                            Spacer()
+                                .frame(width: 60)
+
+                            Button(action: {
+                                // Handle next action
+                                if selectedPage < pageCount - 1 {
+                                    selectedPage += 1
+                                }
+                            }) {
+                                Image("Next")
+                                    .resizable()
+                                    .frame(width: 50, height: 50)
+                            }
                         }
+                        .padding(40)
                     }
-                    .padding(40)
+                    .frame(width: geometry.size.width, height: geometry.size.height)
                 }
-                .frame(width: geometry.size.width, height: geometry.size.height)
             }
+            .ignoresSafeArea(.all)
+            .navigationBarHidden(true)
         }
-        .ignoresSafeArea(.all)
     }
 }
 
 
+struct BlueButton: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .font(.system(size: 20))
+            .bold()
+            .padding()
+            .frame(width: 150, height: 40)
+            .background(Color("Button"))
+            .foregroundColor(.white)
+            .clipShape(RoundedRectangle(cornerRadius: 20))
+        }
+}
+
+extension Color {
+    func toRGB() -> String {
+        let uiColor = UIColor(self)
+        var red: CGFloat = 0
+        var green: CGFloat = 0
+        var blue: CGFloat = 0
+        var alpha: CGFloat = 0
+
+        uiColor.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
+
+        let rgbString = "rgb(\(Int(red * 255)),\(Int(green * 255)),\(Int(blue * 255)))"
+        return rgbString
+    }
+}
 
 struct CustomPageControl: View {
     let numberOfPages: Int
@@ -108,28 +143,31 @@ struct PageView: View {
                 views[index].tag(index)
             }
         }
-        .tabViewStyle(PageTabViewStyle())
+        .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never)) // Removes the default page indicator
     }
 }
 
 struct PageOneView: View {
-    @State private var description: String = ""
-    @State private var selectedColor: Color = .yellow
-    @State private var selectedOption: String = "Retro"
+    @EnvironmentObject var sharedData: SharedData
     let options = ["Retro", "Minimalist", "Hand-drawn", "Typography-based", "Photographic", "Travel", "Contemporary/Abstract"]
-    @State private var buttonScale: CGFloat = 1.0
     
     var body: some View {
             VStack(spacing: 15) {
-//                HStack(){
-//                    Text("Customize")
-//                        .font(.title)
-//                        //.fontWeight(.bold)
-//                        .foregroundColor(Color("Button"))
-//
-//                }
-                //.padding()
+                
+                HStack(spacing: -10) {
+                    VStack(alignment: .center) {
+                        Text("Personalize the front page")
+                            .font(.system(size: 20))
+                            .bold()
+                            .foregroundColor(Color.white)
+        
+                    }
+                }
+                .frame(width: 260, height: 30)
+                .background(Color("Button"))
+                .clipShape(RoundedRectangle(cornerRadius: 20))
 
+                
                 HStack(spacing: -10) {
                     VStack {
                         Image("Color")
@@ -138,7 +176,7 @@ struct PageOneView: View {
                     }
                     .frame(width: 50, height: 50, alignment: .center)
 
-                    ColorPicker("Select a color", selection: $selectedColor)
+                    ColorPicker("Select a color", selection: $sharedData.selectedColor)
                         .padding(15)
                         .foregroundColor(Color("InputText"))
                 }
@@ -154,7 +192,7 @@ struct PageOneView: View {
                     }
                     .frame(width: 50, height: 50, alignment: .center)
 
-                    Picker("Select an option", selection: $selectedOption) {
+                    Picker("Select an option", selection: $sharedData.selectedOption) {
                         ForEach(options, id: \.self) { option in
                             Text(option).accentColor(.black)
                         }
@@ -176,65 +214,49 @@ struct PageOneView: View {
                     }
                     .frame(width: 50, height: 50, alignment: .center)
 
-                    TextField("Add description", text: $description)
+                    TextField("Add description", text: $sharedData.description)
                         .padding(-2)
                 }
                 .frame(width: 350, height: 55)
                 .background(Color.init(white: 1.0))
                 .clipShape(RoundedRectangle(cornerRadius: 8))
+                
 
-                // Your button and image code here (commented out for clarity)
+                HStack {
+                    VStack {
+                        Image("Check1")
+                            .resizable()
+                            .frame(width: 15, height: 15)
+                    }
+                    Text("All fields are required")
+                        .foregroundColor(Color("Button"))
+                        .font(.system(size: 12))
+                }
             }
-
-             // Spacer to center the content vertically
-        
-        
     }
 }
 
-//                Button(action: {
-//                    withAnimation(.easeInOut(duration: 0.2)) {
-//                        buttonScale = 0.9
-//                    }
-//
-//                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-//                        withAnimation(.easeInOut(duration: 0.2)) {
-//                            buttonScale = 1.0
-//                        }
-//                    }
-//
-//                    let rgbColor = selectedColor.toRGB()
-//                    ApiService().postRequest(description: description, color: rgbColor, style: selectedOption) { result in
-//                        self.imageUrl = URL(string: result)
-//                    }
-//                }) {
-//                    Text("Generate")
-//                }
-//                .buttonStyle(BlueButton())
-//                .scaleEffect(buttonScale)
-//
-//                .alert(isPresented: $showingAlert) {
-//                    Alert(title: Text("Image Downloaded"), message: Text("Image has been saved to your Photos."), dismissButton: .default(Text("OK")))
-//                }
-//
-//                if let url = imageUrl {
-//                    AsyncImage(url: url) { image in
-//                        image.resizable()
-//                    } placeholder: {
-//                        ProgressView()
-//                    }.frame(width: 250, height: 250)
-//                }
 
 
 struct PageTwoView: View {
-    @State private var description: String = ""
-    @State private var selectedColor: Color = .yellow
-    @State private var selectedOption: String = "Retro"
-    let options = ["Retro", "Minimalist", "Hand-drawn", "Typography-based", "Photographic", "Travel", "Contemporary/Abstract"]
-    @State private var buttonScale: CGFloat = 1.0
-    
+    @EnvironmentObject var sharedData: SharedData
+
     var body: some View {
             VStack(spacing: 15) {
+                HStack(spacing: -10) {
+                    VStack(alignment: .center) {
+                        Text("Personalize the back page")
+                            .font(.system(size: 20))
+                            .bold()
+                            .foregroundColor(Color.white)
+        
+                    }
+                }
+                .frame(width: 260, height: 30)
+                .background(Color("Button"))
+                .clipShape(RoundedRectangle(cornerRadius: 20))
+
+
                 HStack {
                     VStack {
                         Image("House")
@@ -243,27 +265,27 @@ struct PageTwoView: View {
                     }
                     .frame(width: 50, height: 50, alignment: .center)
 
-                    TextField("Street Address", text: $description)
+                    TextField("Street Address", text: $sharedData.street)
                         .padding(-2)
                 }
                 .frame(width: 350, height: 55)
                 .background(Color.init(white: 1.0))
                 .clipShape(RoundedRectangle(cornerRadius: 8))
 
-                HStack {
-                    VStack {
-                        Image("City")
-                            .resizable()
-                            .frame(width: 11, height: 25)
-                    }
-                    .frame(width: 50, height: 50, alignment: .center)
-
-                    TextField("App, suite, etc (optional)", text: $description)
-                        .padding(-2)
-                }
-                .frame(width: 350, height: 55)
-                .background(Color.init(white: 1.0))
-                .clipShape(RoundedRectangle(cornerRadius: 8))
+//                HStack {
+//                    VStack {
+//                        Image("City")
+//                            .resizable()
+//                            .frame(width: 11, height: 25)
+//                    }
+//                    .frame(width: 50, height: 50, alignment: .center)
+//
+//                    TextField("App, suite, etc (optional)", text: $sharedData.app)
+//                        .padding(-2)
+//                }
+//                .frame(width: 350, height: 55)
+//                .background(Color.init(white: 1.0))
+//                .clipShape(RoundedRectangle(cornerRadius: 8))
                 
                 HStack {
                     VStack {
@@ -273,7 +295,7 @@ struct PageTwoView: View {
                     }
                     .frame(width: 50, height: 50, alignment: .center)
 
-                    TextField("City", text: $description)
+                    TextField("City", text: $sharedData.city)
                         .padding(-2)
                 }
                 .frame(width: 350, height: 55)
@@ -289,7 +311,7 @@ struct PageTwoView: View {
                     }
                     .frame(width: 50, height: 50, alignment: .center)
 
-                    TextField("Country", text: $description)
+                    TextField("Country", text: $sharedData.country)
                         .padding(-2)
                 }
                 .frame(width: 350, height: 55)
@@ -304,27 +326,34 @@ struct PageTwoView: View {
                     }
                     .frame(width: 50, height: 50, alignment: .center)
 
-                    TextField("ZIP / Postcode", text: $description)
+                    TextField("ZIP / Postcode", text: $sharedData.zip)
                         .padding(-2)
                 }
                 .frame(width: 350, height: 55)
                 .background(Color.init(white: 1.0))
                 .clipShape(RoundedRectangle(cornerRadius: 8))
 
-                // Your button and image code here (commented out for clarity)
+                
+                HStack {
+                    VStack {
+                        Image("Check")
+                            .resizable()
+                            .frame(width: 15, height: 15)
+                    }
+                    Text("All fields are optional")
+                        .foregroundColor(Color("Button"))
+                        .font(.system(size: 12))
+                    
+                }
             }
-
-             // Spacer to center the content vertically
-        
         
     }
 }
 
-import SwiftUI
 
 struct MultilineTextView: UIViewRepresentable {
     @Binding var text: String
-    @State var placeholderText: String = "Write your message"
+    @State var placeholderText: String = "Dear Daiana, I hope..."
 
     func makeUIView(context: Context) -> UITextView {
         let textView = UITextView()
@@ -332,7 +361,7 @@ struct MultilineTextView: UIViewRepresentable {
         textView.isEditable = true
         textView.isUserInteractionEnabled = true
         textView.backgroundColor = UIColor(white: 1.0, alpha: 1.0)
-        textView.font = UIFont.systemFont(ofSize: 16)
+        textView.font = UIFont.systemFont(ofSize: 18)
         textView.delegate = context.coordinator
 
         // Setup placeholder
@@ -385,40 +414,93 @@ struct MultilineTextView: UIViewRepresentable {
 
 struct PageThreeView: View {
     @State private var message: String = ""
-    @State private var selectedColor: Color = .yellow
-    @State private var selectedOption: String = "Retro"
-    let options = ["Retro", "Minimalist", "Hand-drawn", "Typography-based", "Photographic", "Travel", "Contemporary/Abstract"]
     @State private var buttonScale: CGFloat = 1.0
-
-    var body: some View {
-        VStack(spacing: 15) {
-            HStack {
-                VStack {
-                    Image("Message")
-                        .resizable()
-                        .frame(width: 30, height: 30)
-                    
-                }
-                
-                .frame(width: 50, height: 50, alignment: .center)
-
-                MultilineTextView(text: $message)
-                    .frame(width: 300, height: 100) // Modify height as needed
-                    .overlay(RoundedRectangle(cornerRadius: 8).stroke(Color("Button"), lineWidth: 1.5))
-            }
-
-            HStack{
-                VStack {
-                    Button("Generate a message") {
-                        // Add your action here
-                        print("Button tapped!")
+    @State private var showingAlert = false
+    @EnvironmentObject var sharedData: SharedData
+    @State private var navigateToOutputFile = false
+    @State private var startActio1: Bool = false
+    
+        var body: some View {
+            VStack(spacing: 15) {
+                HStack(spacing: -10) {
+                    VStack(alignment: .center) {
+                        Text("Write a message")
+                            .font(.system(size: 20))
+                            .bold()
+                            .foregroundColor(Color.white)
+    
                     }
-                    .padding()
                 }
+                .frame(width: 190, height: 30)
+                .background(Color("Button"))
+                .clipShape(RoundedRectangle(cornerRadius: 15))
+    
+                HStack {
+                    MultilineTextView(text: $message)
+                        .frame(width: 350, height: 150) // Modify height as needed
+                        .overlay(RoundedRectangle(cornerRadius: 20).stroke(Color("Button"), lineWidth: 1.5))
+                }
+    
+                HStack {
+                    VStack {
+                        Image("Check1")
+                            .resizable()
+                            .frame(width: 15, height: 15)
+                    }
+                    Text("All fields are required")
+                        .foregroundColor(Color("Button"))
+                        .font(.system(size: 12))
+                }
+    
+                HStack {
+                    Button(action: {
+                                    withAnimation(.easeInOut(duration: 0.2)) {
+                                        buttonScale = 0.9
+                                    }
+
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                                        withAnimation(.easeInOut(duration: 0.2)) {
+                                            buttonScale = 1.0
+                                        }
+                                    }
+
+                        let rgbColor = sharedData.selectedColor.toRGB()
+                                                ApiService().postRequest(description: sharedData.description, color: rgbColor, style: sharedData.selectedOption) { result in
+                                                    self.sharedData.imageUrl = URL(string: result)
+                                                    self.startActio1 = true
+                                                }
+                        
+                                }) {
+                                    Text("Generate")
+                                }
+                                .buttonStyle(BlueButton())
+                                .scaleEffect(buttonScale)
+
+                                .alert(isPresented: $showingAlert) {
+                                    Alert(title: Text("Image Downloaded"), message: Text("Image has been saved to your Photos."), dismissButton: .default(Text("OK")))
+                                }
+
+//                                if let url = imageUrl {
+//                                    AsyncImage(url: url) { image in
+//                                        image.resizable()
+//                                    } placeholder: {
+//                                        ProgressView()
+//                                    }.frame(width: 250, height: 250)
+//                                }
+                                
+                                NavigationLink(
+                                    destination: OutputFile().environmentObject(sharedData), // Replace with the view you want to navigate to
+                                    isActive: $startActio1,
+                                    label: { EmptyView() }
+                                )
+                                .navigationTitle("") // Empty navigation title to hide the default back button text
+                                .hidden()
+                            }
             }
         }
     }
-}
+       
+
 
 
 struct ContentView_Previews: PreviewProvider {
@@ -429,21 +511,28 @@ struct ContentView_Previews: PreviewProvider {
 
 struct PageOneView_Previews: PreviewProvider {
     static var previews: some View {
-        PageOneView()
+        PageOneView().environmentObject(SharedData())
     }
 }
 
 struct PageTwoView_Previews: PreviewProvider {
     static var previews: some View {
-        PageTwoView()
+        PageTwoView().environmentObject(SharedData())
     }
 }
 
 struct PageThreeView_Previews: PreviewProvider {
     static var previews: some View {
-        PageThreeView()
-    }
+            let sharedData = SharedData()
+            
+            return PageThreeView()
+                .environmentObject(sharedData)
+        }
 }
 
-
-
+struct PostcardCardView: View {
+    var body: some View {
+        OutputFile()
+        
+    }
+}
