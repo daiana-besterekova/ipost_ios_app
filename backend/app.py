@@ -10,7 +10,7 @@ class ImageDescription(BaseModel):
     style: str
 
 class Settings(BaseModel):
-    OPENAI_API_KEY: str = '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'
+    OPENAI_API_KEY: str = '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'
     class Config:
         env_file = '.venv'
 
