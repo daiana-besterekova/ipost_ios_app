@@ -422,35 +422,35 @@ struct PageThreeView: View {
     
         var body: some View {
             VStack(spacing: 15) {
-                HStack(spacing: -10) {
-                    VStack(alignment: .center) {
-                        Text("Write a message")
-                            .font(.system(size: 20))
-                            .bold()
-                            .foregroundColor(Color.white)
+//                HStack(spacing: -10) {
+//                    VStack(alignment: .center) {
+//                        Text("Write a message")
+//                            .font(.system(size: 20))
+//                            .bold()
+//                            .foregroundColor(Color.white)
+//
+//                    }
+//                }
+//                .frame(width: 190, height: 30)
+//                .background(Color("Button"))
+//                .clipShape(RoundedRectangle(cornerRadius: 15))
     
-                    }
-                }
-                .frame(width: 190, height: 30)
-                .background(Color("Button"))
-                .clipShape(RoundedRectangle(cornerRadius: 15))
+//                HStack {
+//                    MultilineTextView(text: $message)
+//                        .frame(width: 350, height: 150) // Modify height as needed
+//                        .overlay(RoundedRectangle(cornerRadius: 20).stroke(Color("Button"), lineWidth: 1.5))
+//                }
     
-                HStack {
-                    MultilineTextView(text: $message)
-                        .frame(width: 350, height: 150) // Modify height as needed
-                        .overlay(RoundedRectangle(cornerRadius: 20).stroke(Color("Button"), lineWidth: 1.5))
-                }
-    
-                HStack {
-                    VStack {
-                        Image("Check1")
-                            .resizable()
-                            .frame(width: 15, height: 15)
-                    }
-                    Text("All fields are required")
-                        .foregroundColor(Color("Button"))
-                        .font(.system(size: 12))
-                }
+//                HStack {
+//                    VStack {
+//                        Image("Check1")
+//                            .resizable()
+//                            .frame(width: 15, height: 15)
+//                    }
+//                    Text("All fields are required")
+//                        .foregroundColor(Color("Button"))
+//                        .font(.system(size: 12))
+//                }
     
                 HStack {
                     Button(action: {
