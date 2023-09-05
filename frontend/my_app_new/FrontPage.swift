@@ -1,3 +1,12 @@
+//
+//  FrontPage.swift
+//  my_app_new
+//
+//  Created by Daiana Besterekova on 05/09/2023.
+//
+
+import Foundation
+
 import SwiftUI
 
 struct FrontPageView: View {
@@ -8,45 +17,36 @@ struct FrontPageView: View {
             ZStack {
                 VStack {
                     Spacer()
-                    
-                    Text("Welcome to")
-                        .font(.largeTitle)
-                        .foregroundColor(Color("Button"))
-                    
-                    Text("iPostCard")
-                        .font(.largeTitle)
-                        .fontWeight(.bold)
-                        .foregroundColor(Color("Button"))
-                    
-                    Image("Postcard")
+                    Spacer()
+                    Image("Logo")
                         .resizable()
-                        .frame(width: 80, height: 50)
+                        .frame(width: 350, height: 350)
                     
+                    Spacer()
                     
                     VStack {
                         Text("Experience the future of postcard creation")
-                            .font(.headline)
+                            .font(.system(size: 18, weight: .heavy, design: .rounded))
                             .padding()
                             .multilineTextAlignment(.center)
                             .foregroundColor(Color("Button"))
-                    }
-                    .cornerRadius(8) // Add corner radius to the frame
+                            .cornerRadius(8) // Add corner radius to the frame
 
-                    Button(action: {
-                        startAction = true
-                    }) {
-                        Text("Get started")
-                            .font(.title)
-                            .fontWeight(.semibold)
-                            .foregroundColor(Color.white)
-                            .padding()
-                            .frame(width: 200, height: 60)
-                            .background(Color("Button"))
-                            .cornerRadius(8)
+                        Button(action: {
+                            startAction = true
+                        }) {
+                            Text("Get started")
+                                .font(.system(size: 20, weight: .heavy, design: .rounded))
+                                .foregroundColor(Color.white)
+                                .padding()
+                                .frame(width: 350, height: 60)
+                                .background(Color("Button"))
+                                .cornerRadius(40)
+                        }
+                        .padding(.horizontal)
+                        .padding(.bottom)
                     }
-                    .padding(.horizontal)
                     .padding(.bottom)
-                    Spacer()
                 }
                 .padding(.horizontal)
                 
@@ -67,7 +67,6 @@ struct FrontPageView: View {
 struct PostcardCreationView: View {
     var body: some View {
         ContentView()
-        
     }
 }
 
